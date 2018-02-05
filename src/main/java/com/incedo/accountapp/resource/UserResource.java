@@ -44,10 +44,10 @@ public class UserResource {
 	private MessageSource messageSource;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public RootResponse<String> addUser(@RequestBody User user) throws Exception {
+	public RootResponse<User> addUser(@RequestBody User user) throws Exception {
 		System.out.println(user);
-		userService.addUser(user);
-		return new RootResponse<String>(true, messageSource.getMessage("success.user.added", null, Locale.US));
+		User newUser=userService.addUser(user);
+		return new RootResponse<User>(true,newUser);
 
 	}
 
@@ -84,12 +84,12 @@ public class UserResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public RootResponse<String> updateUser(@RequestBody User user, @PathVariable int id) throws Exception {
+	public RootResponse<User> updateUser(@RequestBody User user, @PathVariable int id) throws Exception {
 		System.out.println(user);
 
 		user.setId(id);
-		userService.addUser(user);
-		return new RootResponse<String>(true, messageSource.getMessage("success.user.added", null, Locale.US));
+		user=userService.addUser(user);
+		return new RootResponse<User>(true, user);
 
 	}
 
