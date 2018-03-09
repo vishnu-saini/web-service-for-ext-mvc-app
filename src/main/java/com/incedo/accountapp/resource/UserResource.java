@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +56,21 @@ public class UserResource {
 	@RequestMapping(method = RequestMethod.GET, params = { "page", "limit",
 			"start" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public RootResponse<Page<User>> getAllUsers(@RequestParam("page") int page, @RequestParam("limit") int limit,
-			@RequestParam("start") int start, @RequestParam(name = "sort", required = false) String sort)
+			@RequestParam("start") int start, @RequestParam(name = "sort", required = false) String sort, HttpServletRequest request)
 			throws Exception {
+		
+		
+		for (int i = 0; request.getParameter("filter[" + i + "][field]") != null; i++) {
+			  String prefix = "filter[" + i + "]";
+			  String field = request.getParameter(prefix + "[field]");
+			  String type = request.getParameter(prefix + "[data][type]");
+			  String value = request.getParameter(prefix + "[data][value]");
+			  String comparison = request.getParameter(prefix + "[data][comparison]");
+			  
+			  System.out.println(field+" " +type+ " " +value+ " " +comparison+ " " +prefix);
+			}
+		
+		
 		System.out.println(sort);
 		Page<User> users;
 		String sortProperty = null;
